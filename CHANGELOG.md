@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [1.0.1](https://github.com/esmartit/smartpoke-freeradius/compare/v1.0.0...v1.0.1) (2020-03-11)
+
+
+### Bug Fixes
+
+* adjusting pipeline ([cc5b2c4](https://github.com/esmartit/smartpoke-freeradius/commit/cc5b2c462811125d25f56453123d9e174dbad311))
+
 # 1.0.0 (2020-03-11)
 
 
