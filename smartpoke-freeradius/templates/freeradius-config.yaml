@@ -1,0 +1,256 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-config
+{{/*  namespace: default*/}}
+data:
+  clients.conf: |-
+    client anywhere {
+        ipaddr = 0.0.0.0/0
+        secret = $ENV{CLIENT_SECRET}
+        nas_type = other
+    }
+  radiusd.conf: |-
+    prefix = /usr
+    exec_prefix = /usr
+    sysconfdir = /etc
+    localstatedir = /var
+    sbindir = ${exec_prefix}/sbin
+    logdir = /var/log/freeradius
+    raddbdir = /etc/freeradius
+    radacctdir = ${logdir}/radacct
+    name = freeradius
+    confdir = ${raddbdir}
+    modconfdir = ${confdir}/mods-config
+    certdir = ${confdir}/certs
+    cadir   = ${confdir}/certs
+    run_dir = ${localstatedir}/run/${name}
+    db_dir = ${raddbdir}
+    libdir = /usr/lib/freeradius
+    pidfile = ${run_dir}/${name}.pid
+    correct_escapes = true
+    max_request_time = 30
+    cleanup_delay = 5
+    max_requests = 16384
+    hostname_lookups = no
+
+    log {
+        destination = files
+        colourise = yes
+        file = ${logdir}/radius.log
+        syslog_facility = daemon
+        stripped_names = no
+        auth = no
+        auth_badpass = no
+        auth_goodpass = no
+        msg_denied = "You are already logged in - access denied"
+    }
+
+    checkrad = ${sbindir}/checkrad
+
+    ENV {
+    }
+
+    security {
+        user = freerad
+        group = freerad
+        allow_core_dumps = no
+        max_attributes = 200
+        reject_delay = 1
+        status_server = yes
+    }
+
+    proxy_requests  = yes
+    $INCLUDE proxy.conf
+
+    $INCLUDE clients.conf
+
+    thread pool {
+        start_servers = 5
+        max_servers = 32
+        min_spare_servers = 3
+        max_spare_servers = 10
+        max_requests_per_server = 0
+        auto_limit_acct = no
+    }
+
+    modules {
+        $INCLUDE mods-enabled/sql
+        $INCLUDE mods-enabled/
+    }
+
+    instantiate {
+    }
+
+    policy {
+        $INCLUDE policy.d/
+    }
+
+    $INCLUDE sites-enabled/
+
+  sqlConf: |-
+    sql {
+            dialect = "postgresql"
+            driver = "rlm_sql_${dialect}"
+            postgresql {
+                    send_application_name = yes
+            }
+
+            server = $ENV{DB_HOST}
+            port = $ENV{DB_PORT}
+            login = $ENV{DB_USER}
+            password = $ENV{DB_PASS}
+            radius_db = "postgres"
+
+            acct_table1 = "$ENV{DB_SCHEMA}.radacct"
+            acct_table2 = "$ENV{DB_SCHEMA}.radacct"
+            postauth_table = "$ENV{DB_SCHEMA}.radpostauth"
+            authcheck_table = "$ENV{DB_SCHEMA}.radcheck"
+            groupcheck_table = "$ENV{DB_SCHEMA}.radgroupcheck"
+            authreply_table = "$ENV{DB_SCHEMA}.radreply"
+            groupreply_table = "$ENV{DB_SCHEMA}.radgroupreply"
+            usergroup_table = "$ENV{DB_SCHEMA}.radusergroup"
+
+            delete_stale_sessions = yes
+
+            pool {
+
+                    start = ${thread[pool].start_servers}
+                    min = ${thread[pool].min_spare_servers}
+                    max = ${thread[pool].max_servers}
+                    spare = ${thread[pool].max_spare_servers}
+                    uses = 0
+                    retry_delay = 30
+                    lifetime = 0
+                    idle_timeout = 60
+            }
+
+            client_table = "$ENV{DB_SCHEMA}.nas"
+            group_attribute = "SQL-Group"
+
+            $INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
+    }
+
+  sitesAvailabe.default: |-
+    server default {
+    listen {
+            type = auth
+            ipaddr = *
+            port = 0
+            limit {
+                  max_connections = 16
+                  lifetime = 0
+                  idle_timeout = 30
+            }
+    }
+    listen {
+            ipaddr = *
+            port = 0
+            type = acct
+            limit {
+            }
+    }
+    listen {
+            type = auth
+            ipv6addr = ::   # any.  ::1 == localhost
+            port = 0
+            limit {
+                  max_connections = 16
+                  lifetime = 0
+                  idle_timeout = 30
+            }
+    }
+    listen {
+            ipv6addr = ::
+            port = 0
+            type = acct
+            limit {
+            }
+    }
+    authorize {
+            preprocess
+            chap
+            mschap
+            suffix
+            eap {
+              ok = return
+            }
+            -sql
+            -ldap
+            #daily
+            expiration
+            logintime
+            dailycounter
+            monthlycounter
+            weeklycounter
+            quaterlycounter
+            yearlycounter
+            noresetcounter
+            expire_on_login
+            accessperiod
+            dailybytecounter
+            pap
+    }
+    authenticate {
+            Auth-Type PAP {
+                    pap
+            }
+            Auth-Type CHAP {
+                    chap
+            }
+            Auth-Type MS-CHAP {
+                    mschap
+            }
+            mschap
+            digest
+            eap
+    }
+    preacct {
+            preprocess
+            acct_unique
+            suffix
+    }
+    accounting {
+            detail
+            #daily
+            unix
+            -sql
+            exec
+            attr_filter.accounting_response
+    }
+    session {
+      sql
+    }
+    post-auth {
+            if (session-state:User-Name && reply:User-Name && request:User-Name && (reply:User-Name == request:User-Name)) {
+                    update reply {
+                            &User-Name !* ANY
+                    }
+            }
+            update {
+                    &reply: += &session-state:
+            }
+            sql_session_start
+            -sql
+            #dailycounter
+            #monthlycounter
+            #noresetcounter
+            #expire_on_login
+            exec
+            remove_reply_message_if_eap
+            Post-Auth-Type REJECT {
+                    -sql
+                    attr_filter.access_reject
+                    eap
+                    remove_reply_message_if_eap
+            }
+            Post-Auth-Type Challenge {
+            }
+
+    }
+    pre-proxy {
+    }
+    post-proxy {
+            eap
+    }
+    }

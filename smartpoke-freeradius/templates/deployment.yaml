@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "smartpoke-freeradius.fullname" . }}
+  labels:
+    {{- include "smartpoke-freeradius.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "smartpoke-freeradius.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "smartpoke-freeradius.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "smartpoke-freeradius.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - /bin/sh
+            - -c
+            - "./docker-entrypoint.sh -X"
+{{/*            - "while true; do sleep 30; done;"*/}}
+          env:
+            - name: "DB_HOST"
+              value: {{ .Values.database.host }}
+            - name: "DB_PORT"
+              value: {{ .Values.database.port | quote }}
+            - name: "DB_USER"
+              value: {{ .Values.database.user }}
+            - name: "DB_SCHEMA"
+              value: {{ .Values.database.schema }}
+            - name: "CLIENT_SECRET"
+              value: {{ .Values.radd.clientSecret }}
+            - name: "DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  key:  postgresql-password
+                  name: {{ .Values.database.passwordKeyref }}
+          ports:
+            - name: udp1
+              containerPort: 1812
+              protocol: UDP
+            - name: udp2
+              containerPort: 1813
+              protocol: UDP
+          volumeMounts:
+            - name: freeradius-config
+              mountPath: /etc/raddb/clients.conf
+              subPath: clients.conf
+            - name: freeradius-config
+              mountPath: /etc/raddb/radiusd.conf
+              subPath: radiusd.conf
+            - name: freeradius-config
+              mountPath: /etc/raddb/mods-enabled/sql
+              subPath: sqlConf
+            - name: freeradius-config
+              mountPath: /etc/raddb/sites-available/default
+              subPath: sitesAvailabe.default
+            - name: freeradius-sqlcounters
+              mountPath: /etc/raddb/mods-enabled/sqlcounter
+              subPath: sqlCounterConf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/dailycounter.conf
+              subPath: dailycounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/monthlycounter.conf
+              subPath: monthlycounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/noresetcounter.conf
+              subPath: noresetcounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/weeklycounter.conf
+              subPath: weeklycounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/quaterlycounter.conf
+              subPath: quaterlycounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/yearlycounter.conf
+              subPath: yearlycounter.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/accessperiod.conf
+              subPath: accessperiod.conf
+            - name: freeradius-sqlcounters
+              mountPath: /etc/freeradius/mods-config/sql/counter/postgresql/dailybytecounter.conf
+              subPath: dailybytecounter.conf
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: freeradius-config
+          configMap:
+            name: freeradius-config
+        - name: freeradius-sqlcounters
+          configMap:
+            name: freeradius-sqlcounters
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

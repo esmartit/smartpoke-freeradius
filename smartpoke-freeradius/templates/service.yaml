@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "smartpoke-freeradius.fullname" . }}
+  labels:
+    {{- include "smartpoke-freeradius.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 1812
+      targetPort: 1812
+      protocol: UDP
+      name: udp1
+    - port: 1813
+      targetPort: 1813
+      protocol: UDP
+      name: udp2
+  selector:
+    {{- include "smartpoke-freeradius.selectorLabels" . | nindent 4 }}

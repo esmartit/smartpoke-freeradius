@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: freeradius-sqlcounters
+{{/*  namespace: default*/}}
+data:
+  dailycounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
+                FROM $ENV{DB_SCHEMA}.radacct \
+                WHERE UserName='%{${key}}' AND \
+                AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+                CalledStationId = '%{Called-Station-Id}'"
+  monthlycounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
+                FROM $ENV{DB_SCHEMA}.radacct \
+                WHERE UserName='%{${key}}' AND \
+                AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+                CalledStationId = '%{Called-Station-Id}'"
+  noresetcounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime),0) FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              CalledStationId = '%{Called-Station-Id}'"
+  weeklycounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
+              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+              CalledStationId = '%{Called-Station-Id}'"
+  quaterlycounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
+              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+              CalledStationId = '%{Called-Station-Id}'"
+  yearlycounter.conf: |-
+    query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
+              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+              CalledStationId = '%{Called-Station-Id}'"
+  accessperiod.conf: |-
+    query = "SELECT CASE WHEN COUNT(radacctid) >= 1 THEN \
+              (UNIX_TIMESTAMP() - COALESCE(UNIX_TIMESTAMP(AcctStartTime),0)) ELSE 0 END \
+              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName = '%{${key}}' AND AcctSessionTime >= 1 AND \
+              CalledStationId = '%{Called-Station-Id}' \
+              ORDER BY AcctStartTime LIMIT 1"
+  dailybytecounter.conf: |-
+    query = "SELECT COALESCE((SUM(AcctInputOctets + AcctOutputOctets)),0) \
+              FROM $ENV{DB_SCHEMA}.radacct \
+              WHERE UserName='%{${key}}' AND AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
+              CalledStationId = '%{Called-Station-Id}'"
+  sqlCounterConf: |-
+    sqlcounter dailycounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Daily-Session-Time
+        check_name = Max-Daily-Session
+        reply_name = Session-Timeout
+
+        key = User-Name
+        reset = daily
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter monthlycounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Monthly-Session-Time
+        check_name = Max-Monthly-Session
+        reply_name = Session-Timeout
+        key = User-Name
+        reset = monthly
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter weeklycounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Weekly-Session-Time
+        check_name = Max-Weekly-Session
+        reply_name = Session-Timeout
+        key = User-Name
+        reset = weekly
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter quaterlycounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Quaterly-Session-Time
+        check_name = Max-Quaterly-Session
+        reply_name = Session-Timeout
+        key = User-Name
+        reset = 3m
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter yearlycounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Yearly-Session-Time
+        check_name = Max-Yearly-Session
+        reply_name = Session-Timeout
+        key = User-Name
+        reset = 12m
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter noresetcounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Max-All-Session-Time
+        check_name = Max-All-Session
+        key = User-Name
+        reset = never
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter expire_on_login {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Expire-After-Initial-Login
+        check_name = Expire-After
+        key = User-Name
+        reset = never
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter accessperiod {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Max-Access-Period-Never
+        check_name = Access-Period
+        key = User-Name
+        reset = never
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
+
+    sqlcounter dailybytecounter {
+        sql_module_instance = sql
+        dialect = ${modules.sql.dialect}
+
+        counter_name = Daily-Total-Max-Octets
+        check_name = Max-Daily-Octets
+        reply_name = Mikrotik-Total-Limit
+        key = User-Name
+        reset = daily
+
+        $INCLUDE ${modconfdir}/sql/counter/${dialect}/${.:instance}.conf
+    }
