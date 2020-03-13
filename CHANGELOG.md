@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [1.0.3](https://github.com/esmartit/smartpoke-freeradius/compare/v1.0.2...v1.0.3) (2020-03-13)
+
+
+### Bug Fixes
+
+* adjusting jenkins pipeline ([#2](https://github.com/esmartit/smartpoke-freeradius/issues/2)) ([17d11cf](https://github.com/esmartit/smartpoke-freeradius/commit/17d11cf12e49041d9d53c7d67e0eb400b4d52c75))
+
 ## [1.0.2](https://github.com/esmartit/smartpoke-freeradius/compare/v1.0.1...v1.0.2) (2020-03-13)
 
 
