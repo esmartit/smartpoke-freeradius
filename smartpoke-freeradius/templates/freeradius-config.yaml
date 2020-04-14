@@ -102,14 +102,14 @@ data:
             password = $ENV{DB_PASS}
             radius_db = "postgres"
 
-            acct_table1 = "$ENV{DB_SCHEMA}.radacct"
-            acct_table2 = "$ENV{DB_SCHEMA}.radacct"
-            postauth_table = "$ENV{DB_SCHEMA}.radpostauth"
-            authcheck_table = "$ENV{DB_SCHEMA}.radcheck"
-            groupcheck_table = "$ENV{DB_SCHEMA}.radgroupcheck"
-            authreply_table = "$ENV{DB_SCHEMA}.radreply"
-            groupreply_table = "$ENV{DB_SCHEMA}.radgroupreply"
-            usergroup_table = "$ENV{DB_SCHEMA}.radusergroup"
+            acct_table1 = "radacct"
+            acct_table2 = "radacct"
+            postauth_table = "radpostauth"
+            authcheck_table = "radcheck"
+            groupcheck_table = "radgroupcheck"
+            authreply_table = "radreply"
+            groupreply_table = "radgroupreply"
+            usergroup_table = "radusergroup"
 
             delete_stale_sessions = yes
 
@@ -125,7 +125,7 @@ data:
                     idle_timeout = 60
             }
 
-            client_table = "$ENV{DB_SCHEMA}.nas"
+            client_table = "nas"
             group_attribute = "SQL-Group"
 
             $INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
@@ -217,6 +217,7 @@ data:
             -sql
             exec
             attr_filter.accounting_response
+            -rest
     }
     session {
       sql
@@ -246,6 +247,7 @@ data:
             }
             Post-Auth-Type Challenge {
             }
+            -rest
 
     }
     pre-proxy {
@@ -253,4 +255,39 @@ data:
     post-proxy {
             eap
     }
+    }
+
+  restConf: |-
+    rest {
+        tls {
+        }
+        connect_uri = "$ENV{REST_HOST}/actuator/health"
+        xlat {
+            tls = ${..tls}
+        }
+        accounting {
+            uri = "${..connect_uri}/user/%{User-Name}/sessions/%{Acct-Unique-Session-ID}"
+            method = 'POST'
+            tls = ${..tls}
+            body = 'json'
+            data = '{ "username": "%{User-Name}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}" }'
+        }
+        post-auth {
+            uri = "$ENV{REST_HOST}/user/%{User-Name}/mac/%{Called-Station-ID}?action=post-auth"
+            method = 'POST'
+            tls = ${..tls}
+            body = 'json'
+            data = '{ "username": "%{User-Name}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}" }'
+        }
+        pool {
+            start = 20
+            min = 1
+            max = 50
+            spare = 1
+            uses = 0
+            retry_delay = 30
+            lifetime = 0
+            idle_timeout = 60
+            connect_timeout = 3.0
+        }
     }

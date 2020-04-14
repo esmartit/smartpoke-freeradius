@@ -1,5 +1,8 @@
-FROM freeradius/freeradius-server:latest
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get -y upgrade tzdata
-ENV TZ=Europe/Madrid
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+FROM openjdk:8-jre-slim
+
+EXPOSE 9000
+
+RUN mkdir /app
+
+COPY build/libs/*.jar /app/application.jar
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar", "/app/application.jar"]
