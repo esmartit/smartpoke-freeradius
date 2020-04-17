@@ -9,12 +9,10 @@ spec:
   ports:
     - port: 1812
       targetPort: 1812
-      nodePort: 31812
       protocol: UDP
       name: udp1
     - port: 1813
       targetPort: 1813
-      nodePort: 31813
       protocol: UDP
       name: udp2
   selector:
