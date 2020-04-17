@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "smartpoke-freeradius.fullname" . }}-endpoint"
+  labels:
+    {{- include "smartpoke-freeradius.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 9000
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "smartpoke-freeradius.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,27 @@
+server.port: 9000
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: "${KAFKA_BROKER_HOST}"
+          producer-properties:
+            acks: "all"
+            retries: 3
+            enable.idempotence: "true"
+      bindings:
+        registered-users-producer:
+          destination: "smartpoke-registered-users"
+        session-activity-producer:
+          destination: "smartpoke-session-activity"
+  data:
+    rest:
+      basePath: /api
+  datasource:
+    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/postgres"
+    username: "${DB_USER}"
+    password: "${DB_PASS}"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: off

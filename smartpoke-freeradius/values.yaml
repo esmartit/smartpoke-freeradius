@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: esmartit/smartpoke-freeradius
+  repository: esmartit/freeradius-endpoint
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -39,12 +39,14 @@ service:
 radd:
   clientSecret: "3Sm4rt1T"
 
-database:
-  host: "esmartitdemo-db-postgresql.default.svc.cluster.local"
-  port: "5432"
-  user: "esmartitpg"
-  schema: "smartpoke"
-  passwordKeyref: "esmartitdemo-db-postgresql"
+freeradiusConfig:
+  image:
+    repository: freeradius/freeradius-server
+    version: 3.0.20
+    pullPolicy: IfNotPresent
+
+endpointConfig:
+  kafkabroker: freeradius-kafka.default.svc.cluster.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -63,3 +65,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+postgresql:
+  enabled: false
+  postgresqlPassword: "1234567890"

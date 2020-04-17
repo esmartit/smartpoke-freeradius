@@ -22,10 +22,35 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: "{{ .Values.fullnameOverride }}-endpoint"
+          securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: "KAFKA_BROKER_HOST"
+              value: {{ .Values.endpointConfig.kafkabroker }}
+            - name: "DB_HOST"
+              value: "{{ .Values.fullnameOverride }}-postgresql"
+            - name: "DB_PORT"
+              value: {{ .Values.postgresql.service.port | quote }}
+            - name: "DB_USER"
+              value: {{ .Values.postgresql.postgresqlUsername }}
+            - name: "DB_PASS"
+              valueFrom:
+                secretKeyRef:
+                  key:  postgresql-password
+                  name: "{{ .Values.fullnameOverride }}-postgresql"
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+          resources:
+        {{- toYaml .Values.resources | nindent 12 }}
+        - name: "{{ .Values.fullnameOverride }}-server"
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.freeradiusConfig.image.repository }}:{{ .Values.freeradiusConfig.image.version}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - /bin/sh
@@ -34,20 +59,20 @@ spec:
 {{/*            - "while true; do sleep 30; done;"*/}}
           env:
             - name: "DB_HOST"
-              value: {{ .Values.database.host }}
+              value: "{{ .Values.fullnameOverride }}-postgresql"
             - name: "DB_PORT"
-              value: {{ .Values.database.port | quote }}
+              value: {{ .Values.postgresql.service.port | quote }}
             - name: "DB_USER"
-              value: {{ .Values.database.user }}
-            - name: "DB_SCHEMA"
-              value: {{ .Values.database.schema }}
+              value: {{ .Values.postgresql.postgresqlUsername }}
             - name: "CLIENT_SECRET"
               value: {{ .Values.radd.clientSecret }}
+            - name: "REST_HOST"
+              value: "http://{{ .Values.fullnameOverride }}-endpoint"
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
                   key:  postgresql-password
-                  name: {{ .Values.database.passwordKeyref }}
+                  name: "{{ .Values.fullnameOverride }}-postgresql"
           ports:
             - name: udp1
               containerPort: 1812
@@ -57,17 +82,20 @@ spec:
               protocol: UDP
           volumeMounts:
             - name: freeradius-config
-              mountPath: /etc/raddb/clients.conf
-              subPath: clients.conf
-            - name: freeradius-config
               mountPath: /etc/raddb/radiusd.conf
               subPath: radiusd.conf
             - name: freeradius-config
               mountPath: /etc/raddb/mods-enabled/sql
               subPath: sqlConf
             - name: freeradius-config
+              mountPath: /etc/raddb/mods-enabled/rest
+              subPath: restConf
+            - name: freeradius-config
               mountPath: /etc/raddb/sites-available/default
               subPath: sitesAvailabe.default
+            - name: freeradius-config
+              mountPath: /etc/raddb/sites-enabled/dynamic-clients
+              subPath: sitesAvailable.dynamicClients
             - name: freeradius-sqlcounters
               mountPath: /etc/raddb/mods-enabled/sqlcounter
               subPath: sqlCounterConf

@@ -2,14 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: freeradius-config
-{{/*  namespace: default*/}}
 data:
-  clients.conf: |-
-    client anywhere {
-        ipaddr = 0.0.0.0/0
-        secret = $ENV{CLIENT_SECRET}
-        nas_type = other
-    }
   radiusd.conf: |-
     prefix = /usr
     exec_prefix = /usr
@@ -63,7 +56,7 @@ data:
     proxy_requests  = yes
     $INCLUDE proxy.conf
 
-    $INCLUDE clients.conf
+{{/*    $INCLUDE clients.conf*/}}
 
     thread pool {
         start_servers = 5
@@ -102,14 +95,14 @@ data:
             password = $ENV{DB_PASS}
             radius_db = "postgres"
 
-            acct_table1 = "$ENV{DB_SCHEMA}.radacct"
-            acct_table2 = "$ENV{DB_SCHEMA}.radacct"
-            postauth_table = "$ENV{DB_SCHEMA}.radpostauth"
-            authcheck_table = "$ENV{DB_SCHEMA}.radcheck"
-            groupcheck_table = "$ENV{DB_SCHEMA}.radgroupcheck"
-            authreply_table = "$ENV{DB_SCHEMA}.radreply"
-            groupreply_table = "$ENV{DB_SCHEMA}.radgroupreply"
-            usergroup_table = "$ENV{DB_SCHEMA}.radusergroup"
+            acct_table1 = "radacct"
+            acct_table2 = "radacct"
+            postauth_table = "radpostauth"
+            authcheck_table = "radcheck"
+            groupcheck_table = "radgroupcheck"
+            authreply_table = "radreply"
+            groupreply_table = "radgroupreply"
+            usergroup_table = "radusergroup"
 
             delete_stale_sessions = yes
 
@@ -125,7 +118,8 @@ data:
                     idle_timeout = 60
             }
 
-            client_table = "$ENV{DB_SCHEMA}.nas"
+            read_clients = yes
+            client_table = "nas"
             group_attribute = "SQL-Group"
 
             $INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
@@ -217,6 +211,7 @@ data:
             -sql
             exec
             attr_filter.accounting_response
+            -rest
     }
     session {
       sql
@@ -246,6 +241,7 @@ data:
             }
             Post-Auth-Type Challenge {
             }
+            #-rest
 
     }
     pre-proxy {
@@ -253,4 +249,60 @@ data:
     post-proxy {
             eap
     }
+    }
+
+  restConf: |-
+    rest {
+        tls {
+        }
+        connect_uri = "$ENV{REST_HOST}/actuator/health"
+        xlat {
+            tls = ${..tls}
+        }
+        accounting {
+            uri = "${..connect_uri}/user/%{User-Name}/sessions/%{Acct-Unique-Session-ID}"
+            method = 'POST'
+            tls = ${..tls}
+            body = 'json'
+            data = '{ "username": "%{User-Name}","statusType": "%{Acct-Status-Type}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}" }'
+        }
+        post-auth {
+            uri = "$ENV{REST_HOST}/user/%{User-Name}/mac/%{Called-Station-ID}?action=post-auth"
+            method = 'POST'
+            tls = ${..tls}
+            body = 'json'
+            data = '{ "username": "%{User-Name}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}" }'
+        }
+        pool {
+            start = 20
+            min = 1
+            max = 50
+            spare = 1
+            uses = 0
+            retry_delay = 30
+            lifetime = 0
+            idle_timeout = 60
+            connect_timeout = 3.0
+        }
+    }
+
+  sitesAvailable.dynamicClients: |-
+    client dynamic {
+        ipaddr = 0.0.0.0/0
+        dynamic_clients = dynamic_clients
+        lifetime = 3600
+    }
+    server dynamic_clients {
+        authorize {
+            if ("%{sql: SELECT nasname FROM nas WHERE nasname = '%{Packet-Src-IP-Address}'}") {
+                update control {
+                    &FreeRADIUS-Client-IP-Address = "%{Packet-Src-IP-Address}"
+                    &FreeRADIUS-Client-Shortname = "%{sql: SELECT shortname FROM nas WHERE nasname = '%{Packet-Src-IP-Address}'}"
+                    &FreeRADIUS-Client-Secret = "%{sql: SELECT secret FROM nas WHERE nasname = '%{Packet-Src-IP-Address}'}"
+                    &FreeRADIUS-Client-NAS-Type = "%{sql: SELECT type FROM nas WHERE nasname = '%{Packet-Src-IP-Address}'}"
+                    &FreeRADIUS-Client-Virtual-Server = "%{sql: SELECT server FROM nas WHERE nasname = '%{Packet-Src-IP-Address}'}"
+                }
+            }
+            ok
+        }
     }
