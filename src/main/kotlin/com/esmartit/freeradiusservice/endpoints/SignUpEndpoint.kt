@@ -1,12 +1,10 @@
 package com.esmartit.freeradiusservice.endpoints
 
-import com.esmartit.freeradiusservice.entities.RadCheckEntity
-import com.esmartit.freeradiusservice.entities.RadCheckRepository
-import com.esmartit.freeradiusservice.entities.RadUserGroupEntity
-import com.esmartit.freeradiusservice.entities.RadUserGroupRepository
+import com.esmartit.freeradiusservice.service.SignUpService
 import org.springframework.cloud.stream.annotation.EnableBinding
 import org.springframework.cloud.stream.annotation.Output
 import org.springframework.http.ResponseEntity
+import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.MessageChannel
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,16 +15,22 @@ import java.util.concurrent.CompletableFuture
 @EnableBinding(RegisteredUsersProducer::class)
 @RestController
 class SignUpEndpoint(
-    private val radCheckRepository: RadCheckRepository,
-    private val radUserGroupRepository: RadUserGroupRepository,
+    private val signUpService: SignUpService,
     private val registeredUsersProducer: RegisteredUsersProducer
 ) {
 
     @PostMapping("/user/signUp")
     fun handle(@RequestBody body: SignUpBody): ResponseEntity<String> {
-        radCheckRepository.save(RadCheckEntity(0, body.username, "Cleartext-Password", ":=", body.password))
-        radUserGroupRepository.save(RadUserGroupEntity(0, body.username, body.groupName, 1))
-        CompletableFuture.runAsync { registeredUsersProducer.output().send(MessageBuilder.withPayload(body).build()) }
+
+        signUpService.execute(body)
+
+        val build = MessageBuilder
+            .withPayload(body)
+            .setHeader(KafkaHeaders.MESSAGE_KEY, body.username)
+            .build()
+
+        CompletableFuture.runAsync { registeredUsersProducer.output().send(build) }
+
         return ResponseEntity.ok("ok")
     }
 }

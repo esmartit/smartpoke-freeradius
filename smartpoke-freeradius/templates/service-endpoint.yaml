@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "smartpoke-freeradius.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 9000

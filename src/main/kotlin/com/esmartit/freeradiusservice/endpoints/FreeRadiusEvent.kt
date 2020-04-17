@@ -4,6 +4,7 @@ import java.time.Instant
 
 data class FreeRadiusEvent(
     val acctSessionId: String,
+    val statusType: String,
     val acctUniqueSessionId: String,
     val calledStationId: String,
     val callingStationId: String,

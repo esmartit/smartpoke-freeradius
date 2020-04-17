@@ -2,47 +2,46 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: freeradius-sqlcounters
-{{/*  namespace: default*/}}
 data:
   dailycounter.conf: |-
     query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
-                FROM $ENV{DB_SCHEMA}.radacct \
+                FROM radacct \
                 WHERE UserName='%{${key}}' AND \
                 AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
                 CalledStationId = '%{Called-Station-Id}'"
   monthlycounter.conf: |-
     query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
-                FROM $ENV{DB_SCHEMA}.radacct \
+                FROM radacct \
                 WHERE UserName='%{${key}}' AND \
                 AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
                 CalledStationId = '%{Called-Station-Id}'"
   noresetcounter.conf: |-
-    query = "SELECT COALESCE(SUM(AcctSessionTime),0) FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+    query = "SELECT COALESCE(SUM(AcctSessionTime),0) FROM radacct WHERE UserName='%{${key}}' AND \
               CalledStationId = '%{Called-Station-Id}'"
   weeklycounter.conf: |-
     query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
-              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              FROM radacct WHERE UserName='%{${key}}' AND \
               AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
               CalledStationId = '%{Called-Station-Id}'"
   quaterlycounter.conf: |-
     query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
-              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              FROM radacct WHERE UserName='%{${key}}' AND \
               AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
               CalledStationId = '%{Called-Station-Id}'"
   yearlycounter.conf: |-
     query = "SELECT COALESCE(SUM(AcctSessionTime - GREATER((%%b - AcctStartTime::ABSTIME::INT4), 0)),0) \
-              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName='%{${key}}' AND \
+              FROM radacct WHERE UserName='%{${key}}' AND \
               AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
               CalledStationId = '%{Called-Station-Id}'"
   accessperiod.conf: |-
     query = "SELECT CASE WHEN COUNT(radacctid) >= 1 THEN \
               (UNIX_TIMESTAMP() - COALESCE(UNIX_TIMESTAMP(AcctStartTime),0)) ELSE 0 END \
-              FROM $ENV{DB_SCHEMA}.radacct WHERE UserName = '%{${key}}' AND AcctSessionTime >= 1 AND \
+              FROM radacct WHERE UserName = '%{${key}}' AND AcctSessionTime >= 1 AND \
               CalledStationId = '%{Called-Station-Id}' \
               ORDER BY AcctStartTime LIMIT 1"
   dailybytecounter.conf: |-
     query = "SELECT COALESCE((SUM(AcctInputOctets + AcctOutputOctets)),0) \
-              FROM $ENV{DB_SCHEMA}.radacct \
+              FROM radacct \
               WHERE UserName='%{${key}}' AND AcctStartTime::ABSTIME::INT4 + AcctSessionTime > '%%b' AND \
               CalledStationId = '%{Called-Station-Id}'"
   sqlCounterConf: |-

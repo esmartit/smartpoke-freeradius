@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: freeradius-endpoint
-  pullPolicy: Never
+  repository: esmartit/freeradius-endpoint
+  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
@@ -31,7 +31,7 @@ securityContext: {}
 # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 1812
   port1: 1812
   port2: 1813
@@ -46,11 +46,7 @@ freeradiusConfig:
     pullPolicy: IfNotPresent
 
 endpointConfig:
-  kafkabroker: test-kafka.default.svc.cluster.local
-
-database:
-  host: "esmartitdemo-db-postgresql.default.svc.cluster.local"
-  schema: "public"
+  kafkabroker: freeradius-kafka.default.svc.cluster.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -71,50 +67,5 @@ tolerations: []
 affinity: {}
 
 postgresql:
-  serviceAccount:
-    enabled: false
-  replication:
-    enabled: true
-    user: repl_user
-    password: repl_password
-    slaveReplicas: 2
-    synchronousCommit: "on"
-    numSynchronousReplicas: 1
-    applicationName: my_application
-  postgresqlUsername: postgres
-  existingSecret: esmartitdemo-freeradius-postgresql
-  postgresqlDataDir: /bitnami/postgresql/data
-  service:
-    type: ClusterIP
-    port: 5432
-  shmVolume:
-    enabled: true
-    chmod:
-      enabled: true
-  persistence:
-    enabled: true
-    mountPath: /bitnami/postgresql
-    subPath: ""
-    accessModes:
-      - ReadWriteOnce
-    size: 8Gi
-  updateStrategy:
-    type: RollingUpdate
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 250m
-  livenessProbe:
-    enabled: true
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
-  readinessProbe:
-    enabled: true
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-    successThreshold: 1
+  enabled: false
+  postgresqlPassword: "1234567890"

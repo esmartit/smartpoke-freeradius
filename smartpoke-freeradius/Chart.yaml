@@ -8,5 +8,6 @@ dependencies:
   - name: postgresql
     version: 8.6.1
     repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
     tags:
       - freeradius-database
