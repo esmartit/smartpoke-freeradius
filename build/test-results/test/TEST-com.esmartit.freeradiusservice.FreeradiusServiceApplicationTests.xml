@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.esmartit.freeradiusservice.FreeradiusServiceApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-17T13:18:04" hostname="worker-342424eb-1b2e-492b-a412-b72d120e925a-td6fs-0hl09" time="0.018">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.esmartit.freeradiusservice.FreeradiusServiceApplicationTests" time="0.018"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
