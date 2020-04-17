@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: esmartit/freeradius-endpoint
+  repository: esmartit/smartpoke-freeradius
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
