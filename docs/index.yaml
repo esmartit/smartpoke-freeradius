@@ -2,8 +2,25 @@ apiVersion: v1
 entries:
   smartpoke-freeradius:
   - apiVersion: v2
+    appVersion: 2.0.2
+    created: "2020-04-17T13:38:47.939080228Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - freeradius-database
+      version: 8.6.1
+    description: A Helm chart for Kubernetes
+    digest: 1f6262bc973e26af6a6cc691d542991319a1b332b6e0e8a249ca1b604316483a
+    name: smartpoke-freeradius
+    type: application
+    urls:
+    - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-2.0.2.tgz
+    version: 2.0.2
+  - apiVersion: v2
     appVersion: 2.0.1
-    created: "2020-04-17T13:29:13.52883068Z"
+    created: "2020-04-17T13:38:47.924460074Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -20,7 +37,7 @@ entries:
     version: 2.0.1
   - apiVersion: v2
     appVersion: 2.0.0
-    created: "2020-04-17T13:29:13.517587032Z"
+    created: "2020-04-17T13:38:47.918437901Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -37,7 +54,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-04-17T13:29:13.510719817Z"
+    created: "2020-04-17T13:38:47.91194455Z"
     description: A Helm chart for Kubernetes
     digest: 380b3a7908c880f068569e4ad169e353b507bb1205145ae11119d07c8315439f
     name: smartpoke-freeradius
@@ -47,7 +64,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.2
-    created: "2020-04-17T13:29:13.505680543Z"
+    created: "2020-04-17T13:38:47.911154973Z"
     description: A Helm chart for Kubernetes
     digest: dbcd70ff061bdcbc1560aa1002f996d07e01fb34eec7b3f7ac4a09840f92ff64
     name: smartpoke-freeradius
@@ -57,7 +74,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.1
-    created: "2020-04-17T13:29:13.504070419Z"
+    created: "2020-04-17T13:38:47.910282882Z"
     description: A Helm chart for Kubernetes
     digest: c883118bd68347c6a5b0341bb139ef0d16c4ff4399bbfb57575d18f34a2cbb8b
     name: smartpoke-freeradius
@@ -65,4 +82,4 @@ entries:
     urls:
     - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-1.0.1.tgz
     version: 1.0.1
-generated: "2020-04-17T13:29:13.492798533Z"
+generated: "2020-04-17T13:38:47.9092869Z"
