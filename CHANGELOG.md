@@ -1,5 +1,22 @@
 # Semantic Versioning Changelog
 
+# [2.0.0](https://github.com/esmartit/smartpoke-freeradius/compare/v1.0.3...v2.0.0) (2020-04-17)
+
+
+### Bug Fixes
+
+* fixing build ([#4](https://github.com/esmartit/smartpoke-freeradius/issues/4)) ([672edfe](https://github.com/esmartit/smartpoke-freeradius/commit/672edfecc4d52933f6d5797c83cd277fdd3b6a27))
+
+
+* Major change (#3) ([cfb1aa9](https://github.com/esmartit/smartpoke-freeradius/commit/cfb1aa9ae39ee138c2a2b090a00753dc41efe561)), closes [#3](https://github.com/esmartit/smartpoke-freeradius/issues/3)
+
+
+### BREAKING CHANGES
+
+* this is a major change in the service
+
+Co-authored-by: Gustavo Rodriguez <gustavo.rodriguez@adevinta.com>
+
 ## [1.0.3](https://github.com/esmartit/smartpoke-freeradius/compare/v1.0.2...v1.0.3) (2020-03-13)
 
 
