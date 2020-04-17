@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.3](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.2...v2.0.3) (2020-04-17)
+
+
+### Bug Fixes
+
+* fixing nas access ([#7](https://github.com/esmartit/smartpoke-freeradius/issues/7)) ([4319e04](https://github.com/esmartit/smartpoke-freeradius/commit/4319e043cf2294ea5202b783538c34342368a63e))
+
 ## [2.0.2](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.1...v2.0.2) (2020-04-17)
 
 
