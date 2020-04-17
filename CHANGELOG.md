@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.2](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.1...v2.0.2) (2020-04-17)
+
+
+### Bug Fixes
+
+* fixing chart image ([#6](https://github.com/esmartit/smartpoke-freeradius/issues/6)) ([6e1d279](https://github.com/esmartit/smartpoke-freeradius/commit/6e1d279e1285e587ded89bafddb3a25d13a2e704))
+
 ## [2.0.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.0...v2.0.1) (2020-04-17)
 
 
