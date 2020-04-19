@@ -30,7 +30,7 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
             sessionActivityProducer.output().send(
                 MessageBuilder
                     .withPayload(body)
-                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId.toByteArray())
                     .build()
             )
         }.whenComplete { r, ex ->
