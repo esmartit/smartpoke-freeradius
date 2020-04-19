@@ -24,12 +24,14 @@ class SignUpEndpoint(
 
         signUpService.execute(body)
 
-        val build = MessageBuilder
-            .withPayload(body)
-            .setHeader(KafkaHeaders.MESSAGE_KEY, body.username)
-            .build()
-
-        CompletableFuture.runAsync { registeredUsersProducer.output().send(build) }
+        CompletableFuture.runAsync {
+            registeredUsersProducer.output().send(
+                MessageBuilder
+                    .withPayload(body)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.username)
+                    .build()
+            )
+        }
 
         return ResponseEntity.ok("ok")
     }

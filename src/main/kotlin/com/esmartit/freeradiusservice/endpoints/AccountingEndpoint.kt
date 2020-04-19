@@ -23,12 +23,14 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
         @PathVariable(required = false) acctUniqueSessionID: String?
     ): ResponseEntity<Any> {
 
-        val message = MessageBuilder
-            .withPayload(body)
-            .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId)
-            .build()
-
-        CompletableFuture.runAsync { sessionActivityProducer.output().send(message) }
+        CompletableFuture.runAsync {
+            sessionActivityProducer.output().send(
+                MessageBuilder
+                    .withPayload(body)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId)
+                    .build()
+            )
+        }
 
         return ResponseEntity.noContent().build()
     }
