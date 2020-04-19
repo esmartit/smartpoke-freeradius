@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.7](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.6...v2.0.7) (2020-04-19)
+
+
+### Bug Fixes
+
+* idempotence ([#11](https://github.com/esmartit/smartpoke-freeradius/issues/11)) ([033a2a3](https://github.com/esmartit/smartpoke-freeradius/commit/033a2a3ed141301db6158ffe15a60c581ac6f979))
+
 ## [2.0.6](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.5...v2.0.6) (2020-04-19)
 
 
