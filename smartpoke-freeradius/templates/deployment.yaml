@@ -82,6 +82,9 @@ spec:
               protocol: UDP
           volumeMounts:
             - name: freeradius-config
+              mountPath: /etc/raddb/clients.conf
+              subPath: clients.conf
+            - name: freeradius-config
               mountPath: /etc/raddb/radiusd.conf
               subPath: radiusd.conf
             - name: freeradius-config
@@ -93,9 +96,6 @@ spec:
             - name: freeradius-config
               mountPath: /etc/raddb/sites-available/default
               subPath: sitesAvailabe.default
-            - name: freeradius-config
-              mountPath: /etc/raddb/sites-enabled/dynamic-clients
-              subPath: sitesAvailable.dynamicClients
             - name: freeradius-sqlcounters
               mountPath: /etc/raddb/mods-enabled/sqlcounter
               subPath: sqlCounterConf

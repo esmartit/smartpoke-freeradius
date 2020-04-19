@@ -3,6 +3,12 @@ kind: ConfigMap
 metadata:
   name: freeradius-config
 data:
+  clients.conf: |-
+    client anywhere {
+        ipaddr = 0.0.0.0/0
+        secret = $ENV{CLIENT_SECRET}
+        nas_type = other
+    }
   radiusd.conf: |-
     prefix = /usr
     exec_prefix = /usr
@@ -56,7 +62,7 @@ data:
     proxy_requests  = yes
     $INCLUDE proxy.conf
 
-{{/*    $INCLUDE clients.conf*/}}
+    $INCLUDE clients.conf
 
     thread pool {
         start_servers = 5
