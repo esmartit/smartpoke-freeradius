@@ -1,5 +1,6 @@
 package com.esmartit.freeradiusservice.endpoints
 
+import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.EnableBinding
 import org.springframework.cloud.stream.annotation.Output
 import org.springframework.http.ResponseEntity
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.CompletableFuture
 
+private val LOGGER = LoggerFactory.getLogger(AccountingEndpoint::class.java)
+
 @RestController
 @EnableBinding(SessionActivityProducer::class)
 class AccountingEndpoint(private val sessionActivityProducer: SessionActivityProducer) {
@@ -23,12 +26,17 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
         @PathVariable(required = false) acctUniqueSessionID: String?
     ): ResponseEntity<Any> {
 
-        val message = MessageBuilder
-            .withPayload(body)
-            .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId)
-            .build()
-
-        CompletableFuture.runAsync { sessionActivityProducer.output().send(message) }
+        CompletableFuture.supplyAsync {
+            sessionActivityProducer.output().send(
+                MessageBuilder
+                    .withPayload(body)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId)
+                    .build()
+            )
+        }.whenComplete { r, ex ->
+            r?.run { LOGGER.info("Message with key: ${body.callingStationId} sent") }
+            ex?.run { LOGGER.error(message, this) }
+        }
 
         return ResponseEntity.noContent().build()
     }

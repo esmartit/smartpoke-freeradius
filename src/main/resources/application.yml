@@ -5,10 +5,10 @@ spring:
       kafka:
         binder:
           brokers: "${KAFKA_BROKER_HOST}"
-          producer-properties:
-            acks: "all"
-            retries: 3
-            enable.idempotence: "true"
+#          producer-properties:
+#            acks: "all"
+#            retries: 3
+#            enable.idempotence: "true"
       bindings:
         registered-users-producer:
           destination: "smartpoke-registered-users"
