@@ -260,7 +260,7 @@ data:
             tls = ${..tls}
         }
         accounting {
-            uri = "${..connect_uri}/user/%{User-Name}/sessions/%{Acct-Unique-Session-ID}"
+            uri = "$ENV{REST_HOST}/user/%{User-Name}/sessions/%{Acct-Unique-Session-ID}"
             method = 'POST'
             tls = ${..tls}
             body = 'json'
