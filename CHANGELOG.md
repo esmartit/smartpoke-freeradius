@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.5](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.4...v2.0.5) (2020-04-19)
+
+
+### Bug Fixes
+
+* kafka producer ([#9](https://github.com/esmartit/smartpoke-freeradius/issues/9)) ([c0c0a55](https://github.com/esmartit/smartpoke-freeradius/commit/c0c0a55e761644f1d33baadaa3e7ac5d3d506e3e))
+
 ## [2.0.4](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.3...v2.0.4) (2020-04-19)
 
 
