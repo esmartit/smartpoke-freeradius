@@ -1,6 +1,7 @@
 package com.esmartit.freeradiusservice.endpoints
 
 import com.esmartit.freeradiusservice.service.SignUpService
+import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.EnableBinding
 import org.springframework.cloud.stream.annotation.Output
 import org.springframework.http.ResponseEntity
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.CompletableFuture
+
+private val LOGGER = LoggerFactory.getLogger(SignUpEndpoint::class.java)
 
 @EnableBinding(RegisteredUsersProducer::class)
 @RestController
@@ -24,13 +27,16 @@ class SignUpEndpoint(
 
         signUpService.execute(body)
 
-        CompletableFuture.runAsync {
+        CompletableFuture.supplyAsync {
             registeredUsersProducer.output().send(
                 MessageBuilder
                     .withPayload(body)
-                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.username)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.username.toByteArray())
                     .build()
             )
+        }.whenComplete { r, ex ->
+            r?.run { LOGGER.info("Message with key: ${body.username} sent") }
+            ex?.run { LOGGER.error(message, this) }
         }
 
         return ResponseEntity.ok("ok")
