@@ -2,8 +2,25 @@ apiVersion: v1
 entries:
   smartpoke-freeradius:
   - apiVersion: v2
+    appVersion: 2.0.4
+    created: "2020-04-19T15:30:39.102362787Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - freeradius-database
+      version: 8.6.1
+    description: A Helm chart for Kubernetes
+    digest: 6e56877f813541d47b35f4c8f11940399db91d2b9da3b76069b759a437af5011
+    name: smartpoke-freeradius
+    type: application
+    urls:
+    - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-2.0.4.tgz
+    version: 2.0.4
+  - apiVersion: v2
     appVersion: 2.0.3
-    created: "2020-04-17T22:00:37.976103097Z"
+    created: "2020-04-19T15:30:39.099726341Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -20,7 +37,7 @@ entries:
     version: 2.0.3
   - apiVersion: v2
     appVersion: 2.0.2
-    created: "2020-04-17T22:00:37.972223288Z"
+    created: "2020-04-19T15:30:39.097110754Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -37,7 +54,7 @@ entries:
     version: 2.0.2
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2020-04-17T22:00:37.95674687Z"
+    created: "2020-04-19T15:30:39.09202779Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -54,7 +71,7 @@ entries:
     version: 2.0.1
   - apiVersion: v2
     appVersion: 2.0.0
-    created: "2020-04-17T22:00:37.953760636Z"
+    created: "2020-04-19T15:30:39.08916433Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -71,7 +88,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-04-17T22:00:37.951034287Z"
+    created: "2020-04-19T15:30:39.081310412Z"
     description: A Helm chart for Kubernetes
     digest: 380b3a7908c880f068569e4ad169e353b507bb1205145ae11119d07c8315439f
     name: smartpoke-freeradius
@@ -81,7 +98,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.2
-    created: "2020-04-17T22:00:37.950498212Z"
+    created: "2020-04-19T15:30:39.079812139Z"
     description: A Helm chart for Kubernetes
     digest: dbcd70ff061bdcbc1560aa1002f996d07e01fb34eec7b3f7ac4a09840f92ff64
     name: smartpoke-freeradius
@@ -91,7 +108,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.1
-    created: "2020-04-17T22:00:37.949963193Z"
+    created: "2020-04-19T15:30:39.079317856Z"
     description: A Helm chart for Kubernetes
     digest: c883118bd68347c6a5b0341bb139ef0d16c4ff4399bbfb57575d18f34a2cbb8b
     name: smartpoke-freeradius
@@ -99,4 +116,4 @@ entries:
     urls:
     - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-1.0.1.tgz
     version: 1.0.1
-generated: "2020-04-17T22:00:37.949337259Z"
+generated: "2020-04-19T15:30:39.078611651Z"
