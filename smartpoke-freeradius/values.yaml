@@ -46,7 +46,7 @@ freeradiusConfig:
     pullPolicy: IfNotPresent
 
 endpointConfig:
-  kafkabroker: freeradius-kafka.default.svc.cluster.local
+  kafkabroker: event-bus-kafka
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
