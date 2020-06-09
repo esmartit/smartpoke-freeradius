@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.0.8](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.7...v2.0.8) (2020-06-09)
+
+
+### Bug Fixes
+
+* adding id to entities ([#12](https://github.com/esmartit/smartpoke-freeradius/issues/12)) ([3826644](https://github.com/esmartit/smartpoke-freeradius/commit/3826644955dd278671085ac092c6654ecf38497e))
+
 ## [2.0.7](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.6...v2.0.7) (2020-04-19)
 
 
