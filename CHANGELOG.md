@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [2.1.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.8...v2.1.0) (2020-06-11)
+
+
+### Features
+
+* adding limitations functionality ([#13](https://github.com/esmartit/smartpoke-freeradius/issues/13)) ([8e2a1d4](https://github.com/esmartit/smartpoke-freeradius/commit/8e2a1d4b106d67c5562542292f5f4aa24e693f8f))
+
 ## [2.0.8](https://github.com/esmartit/smartpoke-freeradius/compare/v2.0.7...v2.0.8) (2020-06-09)
 
 
