@@ -27,4 +27,9 @@ data class RadGroupCheckEntity(
 )
 
 @RepositoryRestResource(collectionResourceRel = "radgroupcheck", path = "radgroupcheck")
-interface RadGroupCheckRepository : CrudRepository<RadGroupCheckEntity, Int>
+interface RadGroupCheckRepository : CrudRepository<RadGroupCheckEntity, Int> {
+    fun findByGroupName(name: String): List<RadGroupCheckEntity>
+    fun findByGroupNameAndAttribute(name: String, attribute: String): RadGroupCheckEntity?
+    fun deleteByGroupNameAndAttribute(name: String, attribute: String)
+    fun deleteByGroupName(name: String)
+}
