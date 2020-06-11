@@ -2,12 +2,12 @@ package com.esmartit.freeradiusservice.service.limitations
 
 import com.esmartit.freeradiusservice.entities.LimitationEntity
 import com.esmartit.freeradiusservice.entities.Period
-import com.esmartit.freeradiusservice.entities.Rate
-import com.esmartit.freeradiusservice.entities.Traffic
 import com.esmartit.freeradiusservice.entities.RadGroupCheckEntity
 import com.esmartit.freeradiusservice.entities.RadGroupCheckRepository
 import com.esmartit.freeradiusservice.entities.RadGroupReplyEntity
 import com.esmartit.freeradiusservice.entities.RadGroupReplyRepository
+import com.esmartit.freeradiusservice.entities.Rate
+import com.esmartit.freeradiusservice.entities.Traffic
 
 class GetLimitations(
     private val radGroupReplyRepository: RadGroupReplyRepository,
@@ -45,7 +45,7 @@ class GetLimitations(
             MAX_TRAFFIC -> acc.apply { this[MAX_TRAFFIC] = entity.value }
             ACCESS_PERIOD -> acc.apply { this[ACCESS_PERIOD] = entity.value }
             DAILY_SESSION -> acc.apply { this[DAILY_SESSION] = entity.value }
-            else -> throw IllegalStateException("Unknown Property ${entity.attribute}")
+            else -> acc
         }
     }
 
