@@ -27,5 +27,10 @@ data class RadGroupReplyEntity(
 )
 
 @RepositoryRestResource(collectionResourceRel = "radgroupreply", path = "radgroupreply")
-interface RadGroupReplyRepository : CrudRepository<RadGroupReplyEntity, Int>
+interface RadGroupReplyRepository : CrudRepository<RadGroupReplyEntity, Int> {
+    fun findByGroupName(name: String): List<RadGroupReplyEntity>
+    fun findByGroupNameAndAttribute(name: String, attribute: String): RadGroupReplyEntity?
+    fun deleteByGroupNameAndAttribute(name: String, attribute: String)
+    fun deleteByGroupName(name: String)
+}
 
