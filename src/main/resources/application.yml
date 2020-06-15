@@ -25,3 +25,9 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: off
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, prometheus
