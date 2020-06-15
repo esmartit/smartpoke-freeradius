@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.2.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.2.0...v2.2.1) (2020-06-15)
+
+
+### Bug Fixes
+
+* prometheus endpoint ([#16](https://github.com/esmartit/smartpoke-freeradius/issues/16)) ([f0d6d8c](https://github.com/esmartit/smartpoke-freeradius/commit/f0d6d8cd87df63f41be7f09f7d45cbfede955aad))
+
 # [2.2.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.1.1...v2.2.0) (2020-06-15)
 
 
