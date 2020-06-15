@@ -15,8 +15,8 @@ class GetLimitations(
 ) {
 
     fun getAll(): List<LimitationEntity> {
-        return (radGroupCheckRepository.findAll().map { groupToGeneric(it) } + radGroupReplyRepository.findAll()
-            .map { replyToGeneric(it) })
+        return (radGroupCheckRepository.findAll().map(this::groupToGeneric) + radGroupReplyRepository.findAll()
+            .map(this::replyToGeneric))
             .groupingBy { it.groupName }
             .fold(mutableMapOf<String, String>(), { acc, entity -> reduceToProperties(entity, acc) })
             .map { createLimitation(it.value, it.key) }
@@ -33,10 +33,7 @@ class GetLimitations(
             .firstOrNull()
     }
 
-    private fun reduceToProperties(
-        entity: GenericRad,
-        acc: MutableMap<String, String>
-    ): MutableMap<String, String> {
+    private fun reduceToProperties(entity: GenericRad, acc: MutableMap<String, String>): MutableMap<String, String> {
         return when (entity.attribute) {
             ACCT_INTERIM_INTERVAL -> acc.apply { this[ACCT_INTERIM_INTERVAL] = entity.value }
             MAX_UPLOAD -> acc.apply { this[MAX_UPLOAD] = entity.value }
