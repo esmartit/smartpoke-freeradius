@@ -25,4 +25,6 @@ data class RadUserGroupEntity(
 )
 
 @RepositoryRestResource(collectionResourceRel = "radusergroup", path = "radusergroup")
-interface RadUserGroupRepository : CrudRepository<RadUserGroupEntity, Int>
+interface RadUserGroupRepository : CrudRepository<RadUserGroupEntity, Int> {
+    fun findByUsername(username: String): RadUserGroupEntity?
+}
