@@ -17,9 +17,13 @@ class GetLimitations(
     fun getAll(): List<LimitationEntity> {
         return (radGroupCheckRepository.findAll().map(this::groupToGeneric) + radGroupReplyRepository.findAll()
             .map(this::replyToGeneric))
-            .groupingBy { it.groupName }
-            .fold(mutableMapOf<String, String>(), { acc, entity -> reduceToProperties(entity, acc) })
-            .map { createLimitation(it.value, it.key) }
+            .groupBy { it.groupName }
+            .map { entry ->
+                entry.key to entry.value.fold(
+                    mutableMapOf<String, String>(),
+                    { acc, entity -> reduceToProperties(acc, entity) })
+            }
+            .map { createLimitation(it.first, it.second) }
     }
 
     fun getByName(name: String): LimitationEntity? {
@@ -27,13 +31,17 @@ class GetLimitations(
         return (radGroupCheckRepository.findByGroupName(name)
             .map { groupToGeneric(it) } + radGroupReplyRepository.findByGroupName(name)
             .map { replyToGeneric(it) })
-            .groupingBy { it.groupName }
-            .fold(mutableMapOf<String, String>(), { acc, entity -> reduceToProperties(entity, acc) })
-            .map { createLimitation(it.value, it.key) }
+            .groupBy { it.groupName }
+            .map { entry ->
+                entry.key to entry.value.fold(
+                    mutableMapOf<String, String>(),
+                    { acc, entity -> reduceToProperties(acc, entity) })
+            }
+            .map { createLimitation(it.first, it.second) }
             .firstOrNull()
     }
 
-    private fun reduceToProperties(entity: GenericRad, acc: MutableMap<String, String>): MutableMap<String, String> {
+    private fun reduceToProperties(acc: MutableMap<String, String>, entity: GenericRad): MutableMap<String, String> {
         return when (entity.attribute) {
             ACCT_INTERIM_INTERVAL -> acc.apply { this[ACCT_INTERIM_INTERVAL] = entity.value }
             MAX_UPLOAD -> acc.apply { this[MAX_UPLOAD] = entity.value }
@@ -60,10 +68,7 @@ class GetLimitations(
             it.value
         )
 
-    private fun createLimitation(
-        propertiesMap: MutableMap<String, String>,
-        name: String
-    ): LimitationEntity {
+    private fun createLimitation(name: String, propertiesMap: MutableMap<String, String>): LimitationEntity {
         val maxUpload = propertiesMap[MAX_UPLOAD]?.toLong()?.let { Rate.fromValue(it) }
         val maxDownload = propertiesMap[MAX_DOWNLOAD]?.toLong()?.let { Rate.fromValue(it) }
         val maxTraffic = propertiesMap[MAX_TRAFFIC]?.toLong()?.let { Traffic.fromValue(it) }
