@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [2.3.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.2.2...v2.3.0) (2020-06-16)
+
+
+### Features
+
+* splash endpoint ([#18](https://github.com/esmartit/smartpoke-freeradius/issues/18)) ([a703e92](https://github.com/esmartit/smartpoke-freeradius/commit/a703e92ad2d073b4ccb6e6ff220aa9b953d7ef76))
+
 ## [2.2.2](https://github.com/esmartit/smartpoke-freeradius/compare/v2.2.1...v2.2.2) (2020-06-16)
 
 
