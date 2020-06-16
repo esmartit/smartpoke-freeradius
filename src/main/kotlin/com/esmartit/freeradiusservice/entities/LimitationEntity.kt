@@ -13,7 +13,6 @@ data class LimitationEntity(
 ) : RepresentationModel<LimitationEntity>()
 
 
-
 data class DataRate(val value: Long, val rate: Rate) {
     private fun actualValue(): Long {
         return value * rate.value
@@ -30,18 +29,9 @@ enum class Rate(val value: Long) {
     companion object {
         fun fromValue(value: Long): DataRate {
             return when {
-                value / GBPS.value > 0 -> DataRate(
-                    value / GBPS.value,
-                    GBPS
-                )
-                value / MBPS.value > 0 -> DataRate(
-                    value / MBPS.value,
-                    MBPS
-                )
-                else -> DataRate(
-                    value / KBPS.value,
-                    KBPS
-                )
+                value / GBPS.value > 0 -> DataRate(value / GBPS.value, GBPS)
+                value / MBPS.value > 0 -> DataRate(value / MBPS.value, MBPS)
+                else -> DataRate(value / KBPS.value, KBPS)
             }
         }
     }
@@ -63,18 +53,9 @@ enum class Traffic(val value: Long) {
     companion object {
         fun fromValue(value: Long): DataTraffic {
             return when {
-                value / GB.value > 0 -> DataTraffic(
-                    value / GB.value,
-                    GB
-                )
-                value / MB.value > 0 -> DataTraffic(
-                    value / MB.value,
-                    MB
-                )
-                else -> DataTraffic(
-                    value / KB.value,
-                    KB
-                )
+                value / GB.value > 0 -> DataTraffic(value / GB.value, GB)
+                value / MB.value > 0 -> DataTraffic(value / MB.value, MB)
+                else -> DataTraffic(value / KB.value, KB)
             }
         }
     }
@@ -96,18 +77,9 @@ enum class Period(val value: Long) {
     companion object {
         fun fromValue(value: Long): TimeRestriction {
             return when {
-                value / DAYS.value > 0 -> TimeRestriction(
-                    value / DAYS.value,
-                    DAYS
-                )
-                value / HOURS.value > 0 -> TimeRestriction(
-                    value / HOURS.value,
-                    HOURS
-                )
-                else -> TimeRestriction(
-                    value / MINUTES.value,
-                    MINUTES
-                )
+                value / DAYS.value > 0 -> TimeRestriction(value / DAYS.value, DAYS)
+                value / HOURS.value > 0 -> TimeRestriction(value / HOURS.value, HOURS)
+                else -> TimeRestriction(value / MINUTES.value, MINUTES)
             }
         }
     }
