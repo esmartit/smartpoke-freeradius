@@ -54,14 +54,15 @@ class SplashEndpoint(
     private fun sendEvent(body: SignUpBody): Boolean {
         return registeredUsersProducer.output().send(
             MessageBuilder
-                .withPayload(body)
-                .setHeader(KafkaHeaders.MESSAGE_KEY, body.username.toByteArray())
+                .withPayload(SignUpEvent(body.clientMac))
+                .setHeader(KafkaHeaders.MESSAGE_KEY, body.clientMac.toByteArray())
                 .build()
         )
     }
 }
 
 data class SignUpBody(val username: String, val password: String, val groupName: String, val clientMac: String)
+data class SignUpEvent(val clientMac: String)
 data class PatchGroup(val username: String, val groupName: String)
 
 interface RegisteredUsersProducer {
