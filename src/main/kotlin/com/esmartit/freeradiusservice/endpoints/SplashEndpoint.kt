@@ -61,7 +61,7 @@ class SplashEndpoint(
     }
 }
 
-data class SignUpBody(val username: String, val password: String, val groupName: String)
+data class SignUpBody(val username: String, val password: String, val groupName: String, val clientMac: String)
 data class PatchGroup(val username: String, val groupName: String)
 
 interface RegisteredUsersProducer {
