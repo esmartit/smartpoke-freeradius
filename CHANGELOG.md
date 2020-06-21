@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.3.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.0...v2.3.1) (2020-06-21)
+
+
+### Bug Fixes
+
+* adding client mac to registered event ([#19](https://github.com/esmartit/smartpoke-freeradius/issues/19)) ([45d7a9b](https://github.com/esmartit/smartpoke-freeradius/commit/45d7a9b726afc90173f45619bad04a5fde3a4447))
+
 # [2.3.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.2.2...v2.3.0) (2020-06-16)
 
 
