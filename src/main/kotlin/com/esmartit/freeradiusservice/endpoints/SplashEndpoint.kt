@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 import java.util.concurrent.CompletableFuture
 
 private val LOGGER = LoggerFactory.getLogger(SplashEndpoint::class.java)
@@ -54,7 +55,7 @@ class SplashEndpoint(
     private fun sendEvent(body: SignUpBody): Boolean {
         return registeredUsersProducer.output().send(
             MessageBuilder
-                .withPayload(SignUpEvent(body.clientMac))
+                .withPayload(SignUpEvent(body.clientMac, Instant.now().toEpochMilli()))
                 .setHeader(KafkaHeaders.MESSAGE_KEY, body.clientMac.toByteArray())
                 .build()
         )
@@ -62,7 +63,7 @@ class SplashEndpoint(
 }
 
 data class SignUpBody(val username: String, val password: String, val groupName: String, val clientMac: String)
-data class SignUpEvent(val clientMac: String)
+data class SignUpEvent(val clientMac: String, val seenTimeEpoch: Long)
 data class PatchGroup(val username: String, val groupName: String)
 
 interface RegisteredUsersProducer {
