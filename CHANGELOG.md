@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.3.4](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.3...v2.3.4) (2020-06-29)
+
+
+### Bug Fixes
+
+* meraki limitation values ([#22](https://github.com/esmartit/smartpoke-freeradius/issues/22)) ([f9bbc66](https://github.com/esmartit/smartpoke-freeradius/commit/f9bbc66b16af515cf75af2a1c4906cd69eaf9d75))
+
 ## [2.3.3](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.2...v2.3.3) (2020-06-22)
 
 
