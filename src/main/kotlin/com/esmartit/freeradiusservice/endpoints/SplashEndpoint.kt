@@ -55,15 +55,46 @@ class SplashEndpoint(
     private fun sendEvent(body: SignUpBody): Boolean {
         return registeredUsersProducer.output().send(
             MessageBuilder
-                .withPayload(SignUpEvent(body.clientMac, Instant.now().toEpochMilli()))
+                .withPayload(SignUpEvent(
+                    clientMac =  body.clientMac,
+                    bDate = body.bDate,
+                    gender = body.gender,
+                    zipCode = body.zipCode,
+                    memberShip = body.memberShip,
+                    spotId = body.spotId,
+                    hotspotName = body.hotspotName,
+                    seenTimeEpoch = Instant.now().toEpochMilli()
+                ))
                 .setHeader(KafkaHeaders.MESSAGE_KEY, body.clientMac.toByteArray())
                 .build()
         )
     }
 }
 
-data class SignUpBody(val username: String, val password: String, val groupName: String, val clientMac: String)
-data class SignUpEvent(val clientMac: String, val seenTimeEpoch: Long)
+data class SignUpBody(
+    val username: String,
+    val password: String,
+    val groupName: String,
+    val clientMac: String,
+    val bDate: String,
+    val gender: String,
+    val zipCode: String,
+    val memberShip: String,
+    val spotId: String,
+    val hotspotName: String
+)
+
+data class SignUpEvent(
+    val clientMac: String,
+    val bDate: String,
+    val gender: String,
+    val zipCode: String,
+    val memberShip: String,
+    val spotId: String,
+    val hotspotName: String,
+    val seenTimeEpoch: Long
+)
+
 data class PatchGroup(val username: String, val groupName: String)
 
 interface RegisteredUsersProducer {
