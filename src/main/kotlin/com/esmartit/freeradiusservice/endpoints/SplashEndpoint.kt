@@ -55,17 +55,20 @@ class SplashEndpoint(
     private fun sendEvent(body: SignUpBody): Boolean {
         return registeredUsersProducer.output().send(
             MessageBuilder
-                .withPayload(SignUpEvent(
-                    clientMac =  body.clientMac,
-                    bDate = body.bDate,
-                    gender = body.gender,
-                    zipCode = body.zipCode,
-                    memberShip = body.memberShip,
-                    spotId = body.spotId,
-                    hotspotName = body.hotspotName,
-                    seenTimeEpoch = Instant.now().toEpochMilli()
-                ))
-                .setHeader(KafkaHeaders.MESSAGE_KEY, body.clientMac.toByteArray())
+                .withPayload(
+                    SignUpEvent(
+                        username = body.username,
+                        clientMac = body.clientMac,
+                        dateOfBirth = body.bDate,
+                        gender = body.gender,
+                        zipCode = body.zipCode,
+                        memberShip = body.memberShip,
+                        spotId = body.spotId,
+                        hotspotName = body.hotspotName,
+                        seenTimeEpoch = Instant.now().toEpochMilli()
+                    )
+                )
+                .setHeader(KafkaHeaders.MESSAGE_KEY, body.username.toByteArray())
                 .build()
         )
     }
@@ -85,8 +88,9 @@ data class SignUpBody(
 )
 
 data class SignUpEvent(
+    val username: String,
     val clientMac: String,
-    val bDate: String,
+    val dateOfBirth: String,
     val gender: String,
     val zipCode: String,
     val memberShip: String,
