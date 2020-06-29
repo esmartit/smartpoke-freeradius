@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [2.4.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.4...v2.4.0) (2020-06-29)
+
+
+### Features
+
+* user info in sigup ([#23](https://github.com/esmartit/smartpoke-freeradius/issues/23)) ([76f3131](https://github.com/esmartit/smartpoke-freeradius/commit/76f313153453393af7ce317fcd93aa1e04ae9c5e))
+
 ## [2.3.4](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.3...v2.3.4) (2020-06-29)
 
 
