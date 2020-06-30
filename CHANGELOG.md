@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.4.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.0...v2.4.1) (2020-06-30)
+
+
+### Bug Fixes
+
+* changing key to username ([#24](https://github.com/esmartit/smartpoke-freeradius/issues/24)) ([3b176b4](https://github.com/esmartit/smartpoke-freeradius/commit/3b176b47e6ce0e276afae312c3e4e467e05b694c))
+
 # [2.4.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.3.4...v2.4.0) (2020-06-29)
 
 
