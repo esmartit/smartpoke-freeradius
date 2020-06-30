@@ -36,7 +36,7 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
                     .build()
             )
         }.whenComplete { r, ex ->
-            r?.run { LOGGER.info("Message with key: ${body.callingStationId} sent") }
+            r?.run { LOGGER.info("Message with key: ${body.username} sent") }
             ex?.run { LOGGER.error(message, this) }
         }
 
