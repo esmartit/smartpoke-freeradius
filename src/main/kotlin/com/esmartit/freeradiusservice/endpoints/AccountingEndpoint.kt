@@ -21,16 +21,18 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
 
     @PostMapping("/user/{userName}/sessions", "/user/{userName}/sessions/{acctUniqueSessionID}")
     fun handle(
-        @RequestBody body: FreeRadiusEvent,
+        @RequestBody body: AccountingActivity,
         @PathVariable userName: String,
         @PathVariable(required = false) acctUniqueSessionID: String?
     ): ResponseEntity<Any> {
 
+        val event = body.toEvent()
+
         CompletableFuture.supplyAsync {
             sessionActivityProducer.output().send(
                 MessageBuilder
-                    .withPayload(body)
-                    .setHeader(KafkaHeaders.MESSAGE_KEY, body.callingStationId.toByteArray())
+                    .withPayload(event)
+                    .setHeader(KafkaHeaders.MESSAGE_KEY, event.username.toByteArray())
                     .build()
             )
         }.whenComplete { r, ex ->
@@ -41,6 +43,32 @@ class AccountingEndpoint(private val sessionActivityProducer: SessionActivityPro
         return ResponseEntity.noContent().build()
     }
 }
+
+private fun AccountingActivity.toEvent(): FreeRadiusEvent {
+    return FreeRadiusEvent(
+        username = username,
+        acctSessionId = acctSessionId,
+        acctUniqueSessionId = acctUniqueSessionId,
+        calledStationId = calledStationId,
+        callingStationId = callingStationId,
+        connectInfo = connectInfo,
+        eventTimeStamp = eventTimeStamp,
+        serviceType = serviceType,
+        statusType = statusType
+    )
+}
+
+data class AccountingActivity(
+    val acctSessionId: String,
+    val statusType: String,
+    val acctUniqueSessionId: String,
+    val calledStationId: String,
+    val callingStationId: String,
+    val connectInfo: String,
+    val eventTimeStamp: String,
+    val serviceType: String,
+    val username: String
+)
 
 interface SessionActivityProducer {
     @Output("session-activity-producer")
