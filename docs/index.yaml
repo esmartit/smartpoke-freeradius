@@ -2,8 +2,25 @@ apiVersion: v1
 entries:
   smartpoke-freeradius:
   - apiVersion: v2
+    appVersion: 2.4.2
+    created: "2020-06-30T08:52:35.658466579Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - freeradius-database
+      version: 8.6.1
+    description: A Helm chart for Kubernetes
+    digest: d7635eb9038b401f37a260530a9fa60c5b4c727a02887b93231f288757d06729
+    name: smartpoke-freeradius
+    type: application
+    urls:
+    - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-2.4.2.tgz
+    version: 2.4.2
+  - apiVersion: v2
     appVersion: 2.4.1
-    created: "2020-06-30T07:06:43.739154542Z"
+    created: "2020-06-30T08:52:35.655249717Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -20,7 +37,7 @@ entries:
     version: 2.4.1
   - apiVersion: v2
     appVersion: 2.4.0
-    created: "2020-06-30T07:06:43.733497266Z"
+    created: "2020-06-30T08:52:35.651966567Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -37,7 +54,7 @@ entries:
     version: 2.4.0
   - apiVersion: v2
     appVersion: 2.3.4
-    created: "2020-06-30T07:06:43.726304943Z"
+    created: "2020-06-30T08:52:35.648499113Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -54,7 +71,7 @@ entries:
     version: 2.3.4
   - apiVersion: v2
     appVersion: 2.3.3
-    created: "2020-06-30T07:06:43.717581084Z"
+    created: "2020-06-30T08:52:35.644020389Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -71,7 +88,7 @@ entries:
     version: 2.3.3
   - apiVersion: v2
     appVersion: 2.3.2
-    created: "2020-06-30T07:06:43.712236821Z"
+    created: "2020-06-30T08:52:35.640751997Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -88,7 +105,7 @@ entries:
     version: 2.3.2
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2020-06-30T07:06:43.707185828Z"
+    created: "2020-06-30T08:52:35.637532146Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -105,7 +122,7 @@ entries:
     version: 2.3.1
   - apiVersion: v2
     appVersion: 2.3.0
-    created: "2020-06-30T07:06:43.692390259Z"
+    created: "2020-06-30T08:52:35.634328767Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -122,7 +139,7 @@ entries:
     version: 2.3.0
   - apiVersion: v2
     appVersion: 2.2.2
-    created: "2020-06-30T07:06:43.682084576Z"
+    created: "2020-06-30T08:52:35.629497896Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -139,7 +156,7 @@ entries:
     version: 2.2.2
   - apiVersion: v2
     appVersion: 2.2.1
-    created: "2020-06-30T07:06:43.678902469Z"
+    created: "2020-06-30T08:52:35.626085582Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -156,7 +173,7 @@ entries:
     version: 2.2.1
   - apiVersion: v2
     appVersion: 2.2.0
-    created: "2020-06-30T07:06:43.668525306Z"
+    created: "2020-06-30T08:52:35.622844441Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -173,7 +190,7 @@ entries:
     version: 2.2.0
   - apiVersion: v2
     appVersion: 2.1.1
-    created: "2020-06-30T07:06:43.663382059Z"
+    created: "2020-06-30T08:52:35.619579827Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -190,7 +207,7 @@ entries:
     version: 2.1.1
   - apiVersion: v2
     appVersion: 2.1.0
-    created: "2020-06-30T07:06:43.659048745Z"
+    created: "2020-06-30T08:52:35.615064408Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -207,7 +224,7 @@ entries:
     version: 2.1.0
   - apiVersion: v2
     appVersion: 2.0.8
-    created: "2020-06-30T07:06:43.655166004Z"
+    created: "2020-06-30T08:52:35.61061679Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -224,7 +241,7 @@ entries:
     version: 2.0.8
   - apiVersion: v2
     appVersion: 2.0.7
-    created: "2020-06-30T07:06:43.648292867Z"
+    created: "2020-06-30T08:52:35.605715206Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -241,7 +258,7 @@ entries:
     version: 2.0.7
   - apiVersion: v2
     appVersion: 2.0.6
-    created: "2020-06-30T07:06:43.637769827Z"
+    created: "2020-06-30T08:52:35.602385239Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -258,7 +275,7 @@ entries:
     version: 2.0.6
   - apiVersion: v2
     appVersion: 2.0.5
-    created: "2020-06-30T07:06:43.63462009Z"
+    created: "2020-06-30T08:52:35.599006919Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -275,7 +292,7 @@ entries:
     version: 2.0.5
   - apiVersion: v2
     appVersion: 2.0.4
-    created: "2020-06-30T07:06:43.631177722Z"
+    created: "2020-06-30T08:52:35.595192284Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -292,7 +309,7 @@ entries:
     version: 2.0.4
   - apiVersion: v2
     appVersion: 2.0.3
-    created: "2020-06-30T07:06:43.627784344Z"
+    created: "2020-06-30T08:52:35.588894357Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -309,7 +326,7 @@ entries:
     version: 2.0.3
   - apiVersion: v2
     appVersion: 2.0.2
-    created: "2020-06-30T07:06:43.623204098Z"
+    created: "2020-06-30T08:52:35.585497298Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -326,7 +343,7 @@ entries:
     version: 2.0.2
   - apiVersion: v2
     appVersion: 2.0.1
-    created: "2020-06-30T07:06:43.61051742Z"
+    created: "2020-06-30T08:52:35.582171303Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -343,7 +360,7 @@ entries:
     version: 2.0.1
   - apiVersion: v2
     appVersion: 2.0.0
-    created: "2020-06-30T07:06:43.607024541Z"
+    created: "2020-06-30T08:52:35.572011089Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -360,7 +377,7 @@ entries:
     version: 2.0.0
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-06-30T07:06:43.603455756Z"
+    created: "2020-06-30T08:52:35.567482905Z"
     description: A Helm chart for Kubernetes
     digest: 380b3a7908c880f068569e4ad169e353b507bb1205145ae11119d07c8315439f
     name: smartpoke-freeradius
@@ -370,7 +387,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.2
-    created: "2020-06-30T07:06:43.598426575Z"
+    created: "2020-06-30T08:52:35.566892514Z"
     description: A Helm chart for Kubernetes
     digest: dbcd70ff061bdcbc1560aa1002f996d07e01fb34eec7b3f7ac4a09840f92ff64
     name: smartpoke-freeradius
@@ -380,7 +397,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.1
-    created: "2020-06-30T07:06:43.591549245Z"
+    created: "2020-06-30T08:52:35.56625372Z"
     description: A Helm chart for Kubernetes
     digest: c883118bd68347c6a5b0341bb139ef0d16c4ff4399bbfb57575d18f34a2cbb8b
     name: smartpoke-freeradius
@@ -388,4 +405,4 @@ entries:
     urls:
     - https://esmartit.github.io/smartpoke-freeradius/docs/smartpoke-freeradius-1.0.1.tgz
     version: 1.0.1
-generated: "2020-06-30T07:06:43.590672659Z"
+generated: "2020-06-30T08:52:35.56526069Z"
