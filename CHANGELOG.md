@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+## [2.4.2](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.1...v2.4.2) (2020-06-30)
+
+
+### Bug Fixes
+
+* splitting accounting endpoint body and event ([#25](https://github.com/esmartit/smartpoke-freeradius/issues/25)) ([3806e6d](https://github.com/esmartit/smartpoke-freeradius/commit/3806e6d4914f5cb29e9b895f7d37bdad77fe6cf3))
+
 ## [2.4.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.0...v2.4.1) (2020-06-30)
 
 
