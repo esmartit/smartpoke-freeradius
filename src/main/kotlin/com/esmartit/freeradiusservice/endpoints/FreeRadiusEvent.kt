@@ -9,5 +9,10 @@ data class FreeRadiusEvent(
     val connectInfo: String,
     val eventTimeStamp: String,
     val serviceType: String,
-    val username: String
+    val username: String,
+    val acctTerminateCause: String,
+    val nasIpAddress: String,
+    val acctSessionTime: String,
+    val acctInputOctets: String,
+    val acctOutputOctets: String
 )
