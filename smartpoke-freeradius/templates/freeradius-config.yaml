@@ -270,7 +270,7 @@ data:
             method = 'POST'
             tls = ${..tls}
             body = 'json'
-            data = '{ "username": "%{User-Name}","statusType": "%{Acct-Status-Type}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}" }'
+            data = '{ "username": "%{User-Name}","statusType": "%{Acct-Status-Type}", "callingStationId": "%{Calling-Station-ID}", "calledStationId": "%{Called-Station-ID}", "acctSessionId":"%{Acct-Session-Id}", "acctUniqueSessionId":"%{Acct-Unique-Session-Id}", "eventTimeStamp":%{integer:Event-Timestamp}, "connectInfo":"%{Connect-Info}", "serviceType":"%{Service-Type}", "acctInputOctets":%{%{Acct-Input-Octets}:-0}, "acctOutputOctets":%{%{Acct-Output-Octets}:-0}, "nasIpAddress":"%{NAS-IP-Address}", "acctSessionTime":%{%{Acct-Session-Time}:-0}, "acctTerminateCause":"%{Acct-Terminate-Cause}" }'
         }
         post-auth {
             uri = "$ENV{REST_HOST}/user/%{User-Name}/mac/%{Called-Station-ID}?action=post-auth"
