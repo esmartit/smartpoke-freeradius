@@ -10,7 +10,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "esmartitdemo-freeradius"
+fullnameOverride: "freeradius"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -46,7 +46,7 @@ freeradiusConfig:
     pullPolicy: IfNotPresent
 
 endpointConfig:
-  kafkabroker: event-bus-kafka
+  kafkabroker: "event-bus-kafka.dev-env.svc.cluster.local:9092"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -67,5 +67,5 @@ tolerations: []
 affinity: {}
 
 postgresql:
-  enabled: false
+  enabled: true
   postgresqlPassword: "1234567890"

@@ -27,7 +27,7 @@ class LimitationsEndpoint(private val limitationsService: LimitationService) {
         val link = linkTo(LimitationsEndpoint::class.java).withSelfRel()
         val content = limitationsService.getAll()
             .map { it.apply { generateLinks(name) } }
-        return CollectionModel<LimitationEntity>(content, link)
+        return CollectionModel.of<LimitationEntity>(content, link)
     }
 
     @GetMapping(value = ["/{groupName}"], produces = ["application/hal+json"])
