@@ -1,5 +1,17 @@
 # Semantic Versioning Changelog
 
+# [2.5.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.2...v2.5.0) (2020-10-19)
+
+
+### Bug Fixes
+
+* accounting log username ([#26](https://github.com/esmartit/smartpoke-freeradius/issues/26)) ([2e560f0](https://github.com/esmartit/smartpoke-freeradius/commit/2e560f0846db40eccacf02f09064ce41ef3e260b))
+
+
+### Features
+
+* adding fields to accounting endpoint ([#27](https://github.com/esmartit/smartpoke-freeradius/issues/27)) ([bce9fe8](https://github.com/esmartit/smartpoke-freeradius/commit/bce9fe8760eb68b8d6de6e72761cb67499c56d43))
+
 ## [2.4.2](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.1...v2.4.2) (2020-06-30)
 
 
