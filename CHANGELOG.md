@@ -1,5 +1,13 @@
 # Semantic Versioning Changelog
 
+## [2.5.1](https://github.com/esmartit/smartpoke-freeradius/compare/v2.5.0...v2.5.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* adding fields to accounting endpoint to kafka ([8d6f956](https://github.com/esmartit/smartpoke-freeradius/commit/8d6f956cdadc41b60163ef5de3bb8a96b66a0621))
+* adding fields to accounting endpoint to kafka ([#28](https://github.com/esmartit/smartpoke-freeradius/issues/28)) ([6955932](https://github.com/esmartit/smartpoke-freeradius/commit/6955932935b7c9049c979e13bd35b0effbe90b8c))
+
 # [2.5.0](https://github.com/esmartit/smartpoke-freeradius/compare/v2.4.2...v2.5.0) (2020-10-19)
 
 
