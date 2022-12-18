@@ -99,7 +99,7 @@ data:
             port = $ENV{DB_PORT}
             login = $ENV{DB_USER}
             password = $ENV{DB_PASS}
-            radius_db = "postgres"
+            radius_db = $ENV{DB_SCHEMA}
 
             acct_table1 = "radacct"
             acct_table2 = "radacct"

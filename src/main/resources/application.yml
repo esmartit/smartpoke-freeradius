@@ -18,7 +18,7 @@ spring:
     rest:
       basePath: /api
   datasource:
-    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/postgres"
+    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA:postgres}"
     username: "${DB_USER}"
     password: "${DB_PASS}"
   jpa:

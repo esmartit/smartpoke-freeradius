@@ -5,46 +5,50 @@ metadata:
   labels:
     {{- include "smartpoke-freeradius.labels" . | nindent 4 }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "smartpoke-freeradius.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/path: /actuator/prometheus
-        prometheus.io/port:  "9000"
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         {{- include "smartpoke-freeradius.selectorLabels" . | nindent 8 }}
     spec:
-    {{- with .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
       serviceAccountName: {{ include "smartpoke-freeradius.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: "{{ .Values.fullnameOverride }}-endpoint"
           securityContext:
-          {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: "KAFKA_BROKER_HOST"
               value: {{ .Values.endpointConfig.kafkabroker }}
             - name: "DB_HOST"
-              value: "{{ .Values.fullnameOverride }}-postgresql"
+              value: {{ .Values.postgresql.host }}
             - name: "DB_PORT"
-              value: {{ .Values.postgresql.service.port | quote }}
+              value: {{ .Values.postgresql.port | quote }}
             - name: "DB_USER"
-              value: {{ .Values.postgresql.postgresqlUsername }}
+              value: {{ .Values.postgresql.username }}
+            - name: "DB_SCHEMA"
+              value: {{ .Values.postgresql.schema }}
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
-                  key:  postgresql-password
-                  name: "{{ .Values.fullnameOverride }}-postgresql"
+                  name: "freeradius-postgres-secret"
+                  key: password
           ports:
             - name: http
               containerPort: 9000
@@ -60,23 +64,24 @@ spec:
             - /bin/sh
             - -c
             - "./docker-entrypoint.sh -X"
-{{/*            - "while true; do sleep 30; done;"*/}}
           env:
             - name: "DB_HOST"
-              value: "{{ .Values.fullnameOverride }}-postgresql"
+              value: {{ .Values.postgresql.host }}
             - name: "DB_PORT"
-              value: {{ .Values.postgresql.service.port | quote }}
+              value: {{ .Values.postgresql.port | quote }}
             - name: "DB_USER"
-              value: {{ .Values.postgresql.postgresqlUsername }}
+              value: {{ .Values.postgresql.username }}
+            - name: "DB_SCHEMA"
+              value: {{ .Values.postgresql.schema }}
             - name: "CLIENT_SECRET"
               value: {{ .Values.radd.clientSecret }}
             - name: "REST_HOST"
-              value: "http://{{ .Values.fullnameOverride }}-endpoint"
+              value: "http://localhost:9000"
             - name: "DB_PASS"
               valueFrom:
                 secretKeyRef:
-                  key:  postgresql-password
-                  name: "{{ .Values.fullnameOverride }}-postgresql"
+                  name: "freeradius-postgres-secret"
+                  key: password
           ports:
             - name: udp1
               containerPort: 1812
@@ -140,11 +145,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
