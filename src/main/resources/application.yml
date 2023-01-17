@@ -27,6 +27,7 @@ spring:
     open-in-view: off
   flyway:
     default-schema: ${DB_SCHEMA:postgres}
+    schemas: ${DB_SCHEMA:postgres}
 
 management:
   endpoints:
