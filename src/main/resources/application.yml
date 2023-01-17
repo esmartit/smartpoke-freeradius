@@ -25,6 +25,8 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: off
+  flyway:
+    default-schema: ${DB_SCHEMA:postgres}
 
 management:
   endpoints:
