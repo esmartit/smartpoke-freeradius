@@ -98,6 +98,12 @@ tolerations: []
 
 affinity: {}
 
+#postgresql:
+#  host: "192.168.89.105"
+#  port: 5432
+#  username: "userraddevenv"
+#  schema: "raddevenv"
+
 postgresql:
   host: "my-postgresql"
   port: 5432
