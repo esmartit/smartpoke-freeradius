@@ -25,9 +25,12 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: off
+    properties:
+      hibernate:
+        default_schema: "public"
   flyway:
-    default-schema: ${DB_SCHEMA:postgres}
-    schemas: ${DB_SCHEMA:postgres}
+    default-schema: "public"
+    schemas: "public"
 
 management:
   endpoints:
