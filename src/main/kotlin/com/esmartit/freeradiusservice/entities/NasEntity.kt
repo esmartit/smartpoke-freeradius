@@ -11,7 +11,7 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(name = "nas", schema = "public", catalog = "postgres")
+@Table(name = "nas")
 data class NasEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

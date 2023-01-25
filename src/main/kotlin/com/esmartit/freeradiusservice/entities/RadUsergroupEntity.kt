@@ -10,7 +10,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "radusergroup", schema = "public", catalog = "postgres")
+@Table(name = "radusergroup")
 data class RadUserGroupEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
