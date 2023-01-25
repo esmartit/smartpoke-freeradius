@@ -95,20 +95,18 @@ data:
                     send_application_name = yes
             }
 
-            server = $ENV{DB_HOST}
             port = $ENV{DB_PORT}
-            login = $ENV{DB_USER}
-            password = $ENV{DB_PASS}
-            radius_db = $ENV{DB_SCHEMA}
+            #radius_db = $ENV{DB_SCHEMA}
+            radius_db = "dbname=$ENV{DB_SCHEMA} host=$ENV{DB_HOST} user=$ENV{DB_USER} password=$ENV{DB_PASS}"
 
-            acct_table1 = "radacct"
-            acct_table2 = "radacct"
-            postauth_table = "radpostauth"
-            authcheck_table = "radcheck"
-            groupcheck_table = "radgroupcheck"
-            authreply_table = "radreply"
-            groupreply_table = "radgroupreply"
-            usergroup_table = "radusergroup"
+            acct_table1 = "$ENV{DB_SCHEMA}.radacct"
+            acct_table2 = "$ENV{DB_SCHEMA}.radacct"
+            postauth_table = "$ENV{DB_SCHEMA}.radpostauth"
+            authcheck_table = "$ENV{DB_SCHEMA}.radcheck"
+            groupcheck_table = "$ENV{DB_SCHEMA}.radgroupcheck"
+            authreply_table = "$ENV{DB_SCHEMA}.radreply"
+            groupreply_table = "$ENV{DB_SCHEMA}.radgroupreply"
+            usergroup_table = "$ENV{DB_SCHEMA}.radusergroup"
 
             delete_stale_sessions = yes
 
@@ -125,7 +123,7 @@ data:
             }
 
             read_clients = yes
-            client_table = "nas"
+            client_table = "$ENV{DB_SCHEMA}.nas"
             group_attribute = "SQL-Group"
 
             $INCLUDE ${modconfdir}/${.:name}/main/${dialect}/queries.conf
