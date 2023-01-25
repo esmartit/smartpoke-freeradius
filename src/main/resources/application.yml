@@ -27,10 +27,10 @@ spring:
     open-in-view: off
     properties:
       hibernate:
-        default_schema: "public"
+        default_schema: ${DB_SCHEMA:postgres}
   flyway:
-    default-schema: "public"
-    schemas: "public"
+    default-schema: ${DB_SCHEMA:postgres}
+    schemas: ${DB_SCHEMA:postgres}
 
 management:
   endpoints:
